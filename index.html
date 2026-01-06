@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lift in string due to pressure</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="KR_fav.jpg" />
+  </head>
+  <body>
+    <header>
+      <div class="headerWrapper">
+        <div>
+          <a href="../index.html"><img class="firmalogo" src="KR_fav.jpg" alt="KR logo" /></a>
+        </div>
+        <nav>
+          <div class="linker">
+            <a class="linkHome" href="https://oniekr.github.io/">Home</a>
+            <a class="linkVF" href="https://oniekr.github.io/FV.github.io/">Flow velocity</a>
+            <a class="linkPV" href="https://oniekr.github.io/pressurevolume.github.io/">Volume / pressure</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <h1>Lift in string due to pressure</h1>
+      <p class="subtitle">Calculate the upward force (tons) from internal pressure acting on the pipe cross-section or annulus.</p>
+
+      <form id="liftForm" class="form">
+        <div class="row">
+          <label for="outerD">Casing size (OD)</label>
+          <div class="input-inline">
+            <select id="outerD" name="outerD">
+              <option value="0.450967">18 5/8"</option>
+              <option value="0.3136438">13 3/8"</option>
+              <option value="0.314025">13 5/8"</option>
+              <option value="0.216609" selected>9 5/8"</option>
+              <option value="0.1571136">7"</option>
+              <option value="0.1213812">5 1/2"</option>
+              <option value="0.1086104">5"</option>
+              <option value="0.0973662">4 1/2"</option>
+            </select>
+
+            <!-- Actual OD value in inches editable by user; auto-updates when select changes -->
+            <input id="outerD_custom" type="text" placeholder="actual (in) e.g. 17.755" aria-label="Custom outer diameter" />
+            <span class="unit" aria-hidden="true">in</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="innerD">Drill pipe size (ID)</label>
+          <div class="input-inline">
+            <select id="innerD" name="innerD">
+                <option value="0">No pipe</option>
+              <option value="0.149225" selected>5 7/8"</option>
+              <option value="0.1397">5 1/2"</option>
+              <option value="0.127">5"</option>
+              <option value="0.1016">4"</option>
+              <option value="0.0889">3 1/2"</option>
+              <option value="0.073025">2 7/8"</option>
+            </select>
+
+            <!-- Custom ID input (user can type their own diameter in inches, supports decimal or fractions like "5 7/8") -->
+            <input id="innerD_custom" type="text" placeholder="Custom (in) e.g. 5.875 or 5 7/8" aria-label="Custom inner diameter" />
+            <span class="unit" aria-hidden="true">in</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="pressure">Pressure</label>
+          <div class="input-inline">
+            <input id="pressure" name="pressure" type="number" step="any" min="0" placeholder="e.g. 345" value="345" required />
+            <select id="pressureUnit">
+              <option value="bar">bar</option>
+              <option value="kPa">kPa</option>
+              <option value="Pa">Pa</option>
+              <option value="MPa">MPa</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Area used for force</label>
+          <div class="muted">Annular area (OD² - ID²) — pressure acts on pipe wall annulus.<br><strong>Note:</strong> This tool always calculates annular area.</div>
+        </div>
+
+        <div class="row buttons">
+          <button type="submit" id="calcBtn">Calculate</button>
+          <button type="button" id="clearBtn">Clear</button>
+        </div>
+
+        <div id="result" class="result" aria-live="polite">
+          <div class="result-label">Lift</div>
+          <div class="result-value" id="resultValue">— tons</div>
+        </div>
+        <div id="explain" class="explain"></div>
+      </form>
+
+      <footer class="footer">Outputs in metric tons ("tons"). Diameters may be entered in mm or m; pressure supports bar, kPa, Pa, MPa.</footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
