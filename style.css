@@ -122,6 +122,23 @@ label {
   min-width: 110px;
 }
 
+/* wrapper to stack a small note above an input */
+.input-with-note {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: 8px;
+  align-self: flex-start;
+  margin-top: -22px;
+}
+
+/* left column for select + stacked input */
+.input-inline .col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 /* ensure the inner diameter select is not too narrow when custom input is present */
 #innerD {
   min-width: 210px;
@@ -135,6 +152,14 @@ label {
 }
 #outerD_custom {
   width: 120px;
+}
+
+/* small helper note placed above inputs */
+.small-note {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-right: 8px;
+  margin-bottom: 0px;
 }
 
 /* Unit label next to inputs */

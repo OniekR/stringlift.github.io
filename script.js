@@ -38,6 +38,14 @@ function formatNumber(n, digits = 3) {
   return Number(n.toFixed(digits)).toLocaleString();
 }
 
+// Plain numeric string without thousands separators for use in input fields
+function formatPlainNumber(n, digits = 3) {
+  if (!isFinite(n)) return "";
+  // toFixed produces a string; trim trailing zeros and optional decimal point
+  const s = Number(n.toFixed(digits)).toString();
+  return s;
+}
+
 // Parse decimal or fractional input like "5 7/8" or "7/8" or "5.875"
 function parseNumberOrFraction(str) {
   str = String(str).trim();
@@ -73,7 +81,7 @@ function updateOuterCustomFromSelect() {
     return;
   }
   const od_in = od_m / 0.0254;
-  if (el) el.value = formatNumber(od_in, 3);
+  if (el) el.value = formatPlainNumber(od_in, 3);
 }
 
 // Keep ID select and custom input in sync
@@ -88,7 +96,7 @@ function updateInnerCustomFromSelect() {
     return;
   }
   const id_in = id_m / 0.0254;
-  if (el) el.value = formatNumber(id_in, 3);
+  if (el) el.value = formatPlainNumber(id_in, 3);
 }
 
 // initialize and add listeners

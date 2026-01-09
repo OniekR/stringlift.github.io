@@ -57,14 +57,16 @@
                 <option value="0.1086104">5"</option>
                 <option value="0.0973662">4 1/2"</option>
               </select>
-
               <!-- Actual OD value in inches editable by user; auto-updates when select changes -->
-              <input
-                id="outerD_custom"
-                type="text"
-                placeholder="actual (in) e.g. 17.755"
-                aria-label="Custom outer diameter"
-              />
+              <div class="input-with-note">
+                <div class="small-note">(Casing ID)</div>
+                <input
+                  id="outerD_custom"
+                  type="text"
+                  placeholder="actual (in) e.g. 17.755"
+                  aria-label="Custom outer diameter"
+                />
+              </div>
               <span class="unit" aria-hidden="true">in</span>
             </div>
           </div>
