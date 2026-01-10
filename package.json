@@ -1,0 +1,16 @@
+{
+  "name": "stringlift.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsdom": "^21.1.2",
+    "puppeteer": "^24.34.0"
+  }
+}
