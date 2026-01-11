@@ -113,7 +113,10 @@
       const innerEl = document.querySelector(".well-inner");
       const leftBox = document.getElementById("leftBox");
       const rightBox = document.getElementById("rightBox");
+      const leftBox2 = document.getElementById("leftBox2");
+      const rightBox2 = document.getElementById("rightBox2");
       const liftText = document.getElementById("liftBoxValue");
+      const pressureDisplayEl = document.getElementById("pressureValue");
       const liftArrow = document.getElementById("liftArrow");
       if (!innerEl) return;
 
@@ -128,7 +131,13 @@
           rightBox.setAttribute("x", "151");
           rightBox.setAttribute("width", "131");
         }
+        if (leftBox2) leftBox2.style.display = "none";
+        if (rightBox2) rightBox2.style.display = "none";
         if (liftText) liftText.setAttribute("x", "150");
+        if (pressureDisplayEl) {
+          pressureDisplayEl.setAttribute("x", "150");
+          pressureDisplayEl.setAttribute("y", "250");
+        }
         if (liftArrow) {
           const line = liftArrow.querySelector("line");
           const poly = liftArrow.querySelector("polygon");
@@ -136,7 +145,7 @@
             line.setAttribute("x1", "150");
             line.setAttribute("x2", "150");
           }
-          if (poly) poly.setAttribute("points", "150,264 144,274 157,274");
+          if (poly) poly.setAttribute("points", "150,130 144,140 157,140");
         }
       } else {
         // Pipe present: show inner pipe and restore original positions/sizes
@@ -149,7 +158,13 @@
           rightBox.setAttribute("x", "190");
           rightBox.setAttribute("width", "95");
         }
+        if (leftBox2) leftBox2.style.display = null;
+        if (rightBox2) rightBox2.style.display = null;
         if (liftText) liftText.setAttribute("x", "62.5");
+        if (pressureDisplayEl) {
+          pressureDisplayEl.setAttribute("x", "240");
+          pressureDisplayEl.setAttribute("y", "120");
+        }
         if (liftArrow) {
           const line = liftArrow.querySelector("line");
           const poly = liftArrow.querySelector("polygon");
@@ -157,7 +172,7 @@
             line.setAttribute("x1", "62.5");
             line.setAttribute("x2", "62.5");
           }
-          if (poly) poly.setAttribute("points", "62.5,264 56,274 69,274");
+          if (poly) poly.setAttribute("points", "62.5,130 56,140 69,140");
         }
       }
     } catch (err) {
@@ -215,9 +230,35 @@
       if (!raw) return false;
       const state = JSON.parse(raw);
       if (!state) return false;
-      if (state.pressureUnit && pressureUnitSelect)
-        pressureUnitSelect.value = state.pressureUnit;
-      if (state.pressure && pressureInput) pressureInput.value = state.pressure;
+      // Restore pressure exactly as stored (no conversion on load)
+      const pressureUnitEl = document.getElementById("pressureUnit");
+      const pressureInputEl = document.getElementById("pressure");
+
+      // Restore raw pressure value if present
+      if (state.hasOwnProperty("pressure") && pressureInputEl) {
+        pressureInputEl.value = state.pressure;
+      }
+
+      // Restore unit select to the stored value (robust match)
+      if (state.pressureUnit && pressureUnitEl) {
+        const desired = String(state.pressureUnit || "").trim();
+        const opts = Array.from(pressureUnitEl.options).map((o) => o.value);
+        let chosen = null;
+        if (opts.includes(desired)) {
+          chosen = desired;
+        } else {
+          const match = opts.find(
+            (o) => o.toLowerCase() === desired.toLowerCase()
+          );
+          if (match) chosen = match;
+        }
+        if (chosen) {
+          pressureUnitEl.value = chosen;
+          pressureUnitEl.dataset.prev = chosen;
+          const idx = opts.indexOf(chosen);
+          if (idx >= 0) pressureUnitEl.selectedIndex = idx;
+        }
+      }
       if (state.outerD) {
         const el = document.getElementById("outerD");
         if (el) el.value = state.outerD;
@@ -283,6 +324,8 @@
     pressureInput.addEventListener("input", function () {
       calculateLift();
     });
+    // Also save on change to catch cases where input event might not fire before refresh
+    pressureInput.addEventListener("change", saveState);
   }
   if (pressureUnitSelect) {
     // additional calc after unit conversion
@@ -343,10 +386,12 @@
   const form = document.getElementById("liftForm");
   const resultEl = document.getElementById("result");
   const explainEl = document.getElementById("explain");
-  const clearBtn = document.getElementById("clearBtn");
 
   function calculateLift() {
     try {
+      const pressureDisplayEl = document.getElementById("pressureValue");
+      if (pressureDisplayEl) pressureDisplayEl.textContent = "— bar";
+
       const idSelect = document.getElementById("innerD");
       const idSelectVal = parseFloat(idSelect.value);
       const idSelectLabel = idSelect.selectedOptions[0].text;
@@ -409,6 +454,7 @@
       }
 
       const p_pa = convertPressureToPa(pVal, pUnit);
+      if (pressureDisplayEl) pressureDisplayEl.textContent = `${pVal} ${pUnit}`;
       if (id_m < 0 || od_m <= 0 || p_pa < 0) {
         const resultValueEl = document.getElementById("resultValue");
         if (resultValueEl) resultValueEl.textContent = "— tons";
@@ -465,28 +511,6 @@
       console.error("calculateLift error", err);
       if (explainEl) explainEl.textContent = `Error: ${err.message}`;
     }
-  }
-
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      if (form) form.reset();
-      if (pressureUnitSelect)
-        pressureUnitSelect.dataset.prev = pressureUnitSelect.value;
-      const resultValueEl = document.getElementById("resultValue");
-      if (resultValueEl) resultValueEl.textContent = "— tons";
-      const liftDisplayEl = document.getElementById("liftBoxValue");
-      if (liftDisplayEl) liftDisplayEl.textContent = "— tons";
-      if (resultEl) resultEl.textContent = "";
-      if (explainEl) explainEl.textContent = "";
-      try {
-        updateInnerCustomFromSelect();
-        updateOuterCustomFromSelect();
-        updateSchematicPipeVisibility();
-        calculateLift();
-      } catch (err) {
-        /* ignore */
-      }
-    });
   }
 
   // initialize

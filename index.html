@@ -32,10 +32,10 @@
     </header>
 
     <main class="container">
-      <h1>Lift in string due to pressure</h1>
+      <h1>Lift due to pressure</h1>
       <p class="subtitle">
-        Calculate the upward force (tons) from internal pressure acting on the
-        pipe cross-section or annulus.
+        Calculate the upward force (tons) from internal pressure acting on
+        pipe/plug/BOP.
       </p>
 
       <div class="calc-grid">
@@ -109,7 +109,6 @@
                 step="any"
                 min="0"
                 placeholder="e.g. 345"
-                value="345"
                 required
               />
               <select id="pressureUnit" aria-label="Pressure unit">
@@ -129,9 +128,7 @@
             </div>
           </div>
 
-          <div class="row buttons">
-            <button type="button" id="clearBtn">Clear</button>
-          </div>
+
 
           <div id="result" class="result" aria-live="polite">
             <div class="result-label">Lift</div>
@@ -165,7 +162,7 @@
             />
             <rect
               x="110"
-              y="40"
+              y="15"
               width="80"
               height="340"
               rx="10"
@@ -174,7 +171,7 @@
             <!-- two small boxes next to pipe with same vertical position -->
             <rect
               x="15"
-              y="170"
+              y="50"
               width="95"
               height="40"
               rx="10"
@@ -183,27 +180,48 @@
             />
             <rect
               x="190"
-              y="170"
+              y="50"
               width="95"
               height="40"
               rx="10"
               class="well-box"
               id="rightBox"
             />
+            <!-- second row of boxes, placed ~2rem (≈32px) below the first row -->
+            <rect
+              x="15"
+              y="250"
+              width="95"
+              height="40"
+              rx="10"
+              class="well-box"
+              id="leftBox2"
+            />
+            <rect
+              x="190"
+              y="250"
+              width="95"
+              height="40"
+              rx="10"
+              class="well-box"
+              id="rightBox2"
+            />
             <!-- calculated lift displayed below the left box and above the arrow -->
-            <text id="liftBoxValue" x="62.5" y="252">— tons</text>
+            <text id="liftBoxValue" x="62.5" y="120">— tons</text>
+            <!-- pressure value displayed on the right side of the well-inner -->
+            <text id="pressureValue" x="240" y="120">— bar</text>
             <!-- upward arrow below the left box pointing to the value -->
             <g id="liftArrow" class="lift-arrow" aria-hidden="true">
               <line
                 x1="62.5"
-                y1="330"
+                y1="200"
                 x2="62.5"
-                y2="270"
+                y2="140"
                 class="lift-arrow-line"
               />
               <polygon
                 class="lift-arrow-head"
-                points="62.5,264 56,274 69,274"
+                points="62.5,130 56,140 69,140"
               />
             </g>
           </svg>
