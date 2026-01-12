@@ -76,7 +76,11 @@ header {
 .linkHome:focus,
 .linkVF:focus,
 .linkPV:focus {
-  background: linear-gradient(90deg, rgba(227, 27, 35, 0.08), rgba(255, 59, 77, 0.04));
+  background: linear-gradient(
+    90deg,
+    rgba(227, 27, 35, 0.08),
+    rgba(255, 59, 77, 0.04)
+  );
   color: var(--equinor-red);
   transform: translateY(-1px);
 }
@@ -97,7 +101,11 @@ header {
 .linkHome.active:focus,
 .linkVF.active:focus,
 .linkPV.active:focus {
-  background: linear-gradient(90deg, rgba(227, 27, 35, 0.08), rgba(255, 59, 77, 0.04));
+  background: linear-gradient(
+    90deg,
+    rgba(227, 27, 35, 0.08),
+    rgba(255, 59, 77, 0.04)
+  );
   color: var(--equinor-red);
   transform: translateY(-1px);
 }
