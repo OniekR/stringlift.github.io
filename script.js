@@ -524,6 +524,23 @@
     });
   }
 
+  // Navigation active link highlighting — add 'active' to the link that matches current page
+  (function setActiveNavLink() {
+    const links = document.querySelectorAll('.linker a');
+    if (!links || !links.length) return;
+    const current = window.location.href.replace(/\/$/, '');
+    links.forEach((a) => {
+      try {
+        const href = a.href.replace(/\/$/, '');
+        if (href === current || current.startsWith(href) || href.startsWith(current) || href.includes(window.location.pathname)) {
+          a.classList.add('active');
+        }
+      } catch (e) {
+        // ignore invalid URLs
+      }
+    });
+  })();
+
   try {
     calculateLift();
   } catch (e) {
